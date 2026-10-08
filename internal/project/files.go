@@ -75,7 +75,7 @@ func checkDirectory(path string) error {
 			return err
 		}
 	}
-	info, err := os.Lstat(path)
+	info, err := os.Stat(path)
 	if os.IsNotExist(err) {
 		return nil
 	}
@@ -83,16 +83,16 @@ func checkDirectory(path string) error {
 		return err
 	}
 	if !info.IsDir() {
-		return fmt.Errorf("%s is not a directory or is a symlink", path)
+		return fmt.Errorf("%s is not a directory", path)
 	}
 	return nil
 }
 
 func makeDirectory(path string, created *[]string) error {
-	info, err := os.Lstat(path)
+	info, err := os.Stat(path)
 	if err == nil {
 		if !info.IsDir() {
-			return fmt.Errorf("%s is not a directory or is a symlink", path)
+			return fmt.Errorf("%s is not a directory", path)
 		}
 		return checkDirectory(path)
 	}
