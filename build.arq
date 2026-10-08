@@ -1,0 +1,42 @@
+let version = "0.1.0"
+let binary = "build/arq"
+let main = "./cmd/arq"
+
+task build {
+    mkdir "build"
+    run "go build -o ${binary} ${main}"
+    print(color("green", "built ${binary} (${version})"))
+}
+
+task test {
+    run "go test ./..."
+}
+
+task vet {
+    run "go vet ./..."
+}
+
+task fmt {
+    run "gofmt -l ."
+}
+
+task check after vet, test {
+    print(color("green", "ok ${version}"))
+}
+
+task dev {
+    run "go run ${main} version"
+}
+
+task install {
+    run "go install ./cmd/arq"
+}
+
+task release after check {
+    build
+    print("releasing ${version}")
+}
+
+task clean {
+    run "rm -rf build"
+}
