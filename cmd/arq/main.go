@@ -22,8 +22,10 @@ func main() {
 		return
 	}
 	switch os.Args[1] {
-	case "version":
+	case "version", "--version", "-V":
 		fmt.Println("arq", version)
+	case "help", "--help", "-h":
+		printUsage()
 	case "init":
 		initCmd(os.Args[2:])
 	case "new":
@@ -329,3 +331,23 @@ func detectCmd() {
 	}
 }
 func fatal(s string) { fmt.Fprintln(os.Stderr, "arq: "+s); os.Exit(1) }
+
+func printUsage() {
+	fmt.Println(`arq - project automation runtime
+
+Usage:
+  arq [task]              run a task from build.arq or a discovered command
+  arq run <task>          run a task explicitly
+  arq file.arq [task]     run a specific .arq file
+  arq list                list tasks and discovered commands
+  arq detect              show detected project root, types, and commands
+  arq check               validate the build file or codebase detection
+  arq init [dir]          create a build.arq (add --template, --non-interactive)
+  arq new <template> [dir]  scaffold a new project with starter files
+  arq templates           list available scaffolding templates
+  arq fmt [path]          format a build file (add --check to verify only)
+  arq repl                start an interactive session
+  arq watch [task]        re-run when the build file changes
+  arq version             print the arq version
+  arq help                print this help`)
+}
